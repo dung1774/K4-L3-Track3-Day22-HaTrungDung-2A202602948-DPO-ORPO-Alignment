@@ -58,10 +58,8 @@ print(f"sum log p = {total.item():.3f}   mean log p = {mean.item():.3f}")
 
 # %%
 def my_dpo_loss(pc, pr, rc, rr, beta=0.1):
-    """pc/pr: policy log-prob chosen/rejected; rc/rr: reference. Trả về loss trung bình."""
-    # TODO: viết bằng torch.nn.functional.logsigmoid
-    return None
-
+    margin = beta * ((pc - rc) - (pr - rr))
+    return -torch.nn.functional.logsigmoid(margin).mean()
 
 # %%
 pc, pr = torch.tensor([-12.0, -30.0]), torch.tensor([-15.0, -28.0])
